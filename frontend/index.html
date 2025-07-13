@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Creative Group</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Intro Logo Animation -->
+  <div id="intro-logo" class="intro-logo-bg d-flex justify-content-center align-items-center">
+    <img src="logo.png" id="mainLogo" alt="Creative Group Logo" class="logo-intro-img">
+  </div>
+  <!-- Navbar -->
+  <nav id="top-navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 d-none">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+        <img src="logo.png" style="width:42px; height:42px; object-fit:contain;" class="me-1 logo-navbar-img" alt="logo">
+        <span class="d-none d-md-inline">Creative Group</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="gap:14px;" id="navLinks"></ul>
+      </div>
+    </div>
+  </nav>
+  <div id="app"></div>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -273,7 +273,10 @@ async function loadConversationWithUser(userId) {
           <span class="badge ${isAdmin ? 'bg-success' : 'bg-primary'}">${isAdmin ? "المدير" : msg.from.username}</span>
           <span>${new Date(msg.createdAt).toLocaleString()}</span>
         </div>
-        <div class="msg-content">${msg.content}</div>
+        <div class="msg-content">
+        ${msg.image ? `<img src="${API.replace('/api','')}${msg.image}" alt="صورة مرسلة" style="max-width: 150px; max-height: 150px; border-radius:10px; margin-bottom:7px; cursor:pointer;" onclick="window.open('${API.replace('/api','')}${msg.image}', '_blank')">` : ''}
+        ${msg.content}
+        </div>
         ${msg.replyTo ? `<div class="reply-ref">رد على: "${msg.replyTo.content}"</div>` : ""}
         <div>
           ${(!isAdmin && !msg.replyTo) ? `<button class="btn btn-outline-primary btn-sm" onclick="showReplyBox('${msg._id}','${userId}')">رد</button>` : ""}
@@ -286,7 +289,6 @@ async function loadConversationWithUser(userId) {
   });
   html += `<div id="replyBoxContainer"></div>`;
   document.getElementById('adminConvSection').innerHTML = html;
-
   document.querySelectorAll('.btn-delete-msg').forEach(btn => {
     btn.onclick = function() {
       const msgId = btn.getAttribute('data-msgid');
@@ -316,8 +318,8 @@ window.showReplyBox = function(msgId, userId){
     const content = this.replyMsg.value;
     await fetch(`${API}/messages/admin/send`, {
       method:"POST",
-      headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
-      body: JSON.stringify({to:userId, content, replyTo:msgId})
+      headers: {'Authorization':`Bearer ${token}`},
+      body: fd
     });
     showAlert('تم إرسال الرد');
     loadConversationWithUser(userId);
@@ -332,11 +334,12 @@ async function loadAdminSend() {
     <div class="card mx-auto" style="max-width:400px">
       <div class="card-body">
         <h5 class="mb-3">إرسال رسالة لموظف</h5>
-        <form id="adminSendForm">
+        <form id="adminSendForm" enctype="multipart/form-data">
           <select required name="to" class="form-select mb-2">
             <option value="">اختر الموظف</option>
             ${users.map(u=>`<option value="${u._id}">${u.username}</option>`).join('')}
           </select>
+          <input type="file" name="image" accept="image/*" id="messageImage">
           <textarea required name="content" class="form-control mb-2" placeholder="محتوى الرسالة"></textarea>
           <button type="submit" class="btn btn-primary">إرسال</button>
         </form>
@@ -349,8 +352,8 @@ async function loadAdminSend() {
     const fd = new FormData(this);
     await fetch(`${API}/messages/admin/send`, {
       method:"POST",
-      headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
-      body: JSON.stringify({to:fd.get('to'), content:fd.get('content')})
+      headers: {'Authorization':`Bearer ${token}`},
+      body: fd
     });
     showAlert('تم الإرسال');
     renderAdminDashboard('send');
@@ -531,8 +534,9 @@ async function renderUserDashboard() {
         <div class="card-body text-center">
           <div class="fw-bold fs-4 mb-1">مرحباً ${user.username}</div>
           <button class="btn btn-outline-danger mb-2" onclick="logout()">تسجيل خروج</button>
-          <form id="userMsgForm" class="my-2">
+          <form id="userMsgForm" class="my-2" enctype="multipart/form-data">
             <textarea required class="form-control mb-2" placeholder="اكتب رسالتك للمدير" name="content"></textarea>
+            <input type="file" name="image" accept="image/*" class="form-control mb-2">
             <button class="btn btn-primary w-100" type="submit">إرسال</button>
           </form>
         </div>
@@ -543,13 +547,14 @@ async function renderUserDashboard() {
       </div>
     </div>
   `);
+
   document.getElementById('userMsgForm').onsubmit = async function(e){
     e.preventDefault();
     const fd = new FormData(this);
     await fetch(`${API}/messages/send`, {
       method:"POST",
-      headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
-      body: JSON.stringify({content:fd.get('content')})
+      headers: {'Authorization':`Bearer ${token}`},
+      body: fd
     });
     showAlert('تم إرسال الرسالة');
     loadUserConversation();
@@ -571,7 +576,10 @@ async function loadUserConversation() {
           <span class="badge ${isAdmin ? 'bg-success' : 'bg-primary'}">${isAdmin ? "المدير" : user.username}</span>
           <span>${new Date(msg.createdAt).toLocaleString()}</span>
         </div>
-        <div class="msg-content">${msg.content}</div>
+        <div class="msg-content">
+          ${msg.image ? `<img src="${API.replace('/api','')}${msg.image}" alt="صورة مرسلة" style="max-width: 150px; max-height: 150px; border-radius:10px; margin-bottom:8px; display:block; cursor:pointer" onclick="window.open('${API.replace('/api','')}${msg.image}', '_blank')">` : ''}
+          ${msg.content ? `<div>${msg.content}</div>` : ''}
+        </div>
         ${msg.replyTo ? `<div class="reply-ref">رد على: "${msg.replyTo.content}"</div>` : ""}
       </div>
     `;

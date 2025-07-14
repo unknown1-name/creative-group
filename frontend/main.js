@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://crazy-aridatha-moss1-576a97f1.koyeb.app/api';
 let token = localStorage.getItem('token') || null;
 let user = JSON.parse(localStorage.getItem('user') || "null");
 const app = document.getElementById('app');

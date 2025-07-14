@@ -45,7 +45,7 @@ router.delete('/user/:id', auth, async (req, res) => {
   res.json({ msg: "تم حذف الموظف" });
 });
 // ... بقية الأكواد والمكتبات المطلوبة ...
-import bcrypt from 'bcryptjs';
+
 
 // ... باقي الأكواد ...
 

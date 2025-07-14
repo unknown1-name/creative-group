@@ -6,12 +6,12 @@ import config from './config.js';
 import authRoutes from './routes/auth.js';
 import messagesRoutes from './routes/messages.js';
 import adminRoutes from './routes/admin.js';
-
+import path from 'path';
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/admin', adminRoutes);
